@@ -1224,8 +1224,10 @@ var LibraryGL = {
     hasRunInit: false,
 
     init: function() {
-      if (GLEmulation.hasRunInit)
+      if (GLEmulation.hasRunInit) {
         return;
+      }
+
       GLEmulation.hasRunInit = true;
 
       GLEmulation.fogColor = new Float32Array(4);
@@ -1415,6 +1417,7 @@ var LibraryGL = {
         var source = GL.getSource(shader, count, string, length);
         console.log("glShaderSource: Input: \n" + source);
 #if GL_DEBUG
+        console.log("glShaderSource: Input: \n" + source);
         GL.shaderOriginalSources[shader] = source;
 #endif
         // XXX We add attributes and uniforms to shaders. The program can ask for the # of them, and see the
@@ -1518,6 +1521,7 @@ var LibraryGL = {
         }
 #if GL_DEBUG
         GL.shaderSources[shader] = source;
+        console.log("glShaderSource: Output: \n" + source);
 #endif
         console.log("glShaderSource: Output: \n" + source);
         Module.ctx.shaderSource(GL.shaders[shader], source);
@@ -1657,9 +1661,7 @@ var LibraryGL = {
       switch (cap) {
         case 0x0de1: // GL_TEXTURE_2D - XXX not according to spec, and not in desktop GL, but works in some GLES1.x apparently, so support it
 #if ASSERTIONS
-          var text = "GL_TEXTURE_2D is not a spec-defined capability for gl{Enable,Disable}ClientState."
-          console.log("Warning: " + text);
-          assert(false, text);
+          abort("GL_TEXTURE_2D is not a spec-defined capability for gl{Enable,Disable}ClientState.");
 #endif
           // Fall through:
         case 0x8078: // GL_TEXTURE_COORD_ARRAY
@@ -1814,7 +1816,7 @@ var LibraryGL = {
       /* A naive implementation of a map backed by an array, and accessed by
        * naive iteration along the array. (hashmap with only one bucket)
        */
-      var CNaiveListMap = function() {
+      function CNaiveListMap() {
         "use strict";
         var list = [];
 
@@ -1867,10 +1869,10 @@ var LibraryGL = {
           keyView.Reset().Next(1).Next(2).Next(3).Set("Three!");
         }
       */
-      var CMapTree = function() {
+      function CMapTree() {
         "use strict";
 
-        var CNLNode = function() {
+        function CNLNode() {
           var map = new CNaiveListMap();
 
           this.child = function(keyFrag) {
@@ -1890,7 +1892,7 @@ var LibraryGL = {
           };
         }
 
-        var CKeyView = function(root) {
+        function CKeyView(root) {
           var cur;
 
           this.reset = function() {
