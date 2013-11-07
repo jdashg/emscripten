@@ -3401,6 +3401,7 @@ var LibraryGL = {
             if (useCurrProgram) {
               this.texCoordLocations[i] = Module.ctx.getAttribLocation(this.program, 'a_texCoord' + i);
             } else {
+              // If this texUnit is disabled, this should just give us -1 anyways.
               this.texCoordLocations[i] = Module.ctx.getAttribLocation(this.program, aTexCoordPrefix + i);
             }
           }
