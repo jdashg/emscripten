@@ -3225,13 +3225,14 @@ var LibraryGL = {
         if (!GL.immediate.enabledClientAttributes[texAttribName])
           continue;
 
-#if ASSERTIONS
         if (!useCurrProgram) {
           if (GL.immediate.TexEnvJIT.getTexUnitType(i) == 0) {
+#if ASSERTIONS
              Runtime.warnOnce("GL_TEXTURE" + i + " coords are supplied, but that texture unit is disabled in the fixed-function pipeline.");
+#endif
+             continue;
           }
         }
-#endif
 
         textureSizes[i] = GL.immediate.clientAttributes[texAttribName].size;
         textureTypes[i] = GL.immediate.clientAttributes[texAttribName].type;
